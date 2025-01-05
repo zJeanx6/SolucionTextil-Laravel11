@@ -1,5 +1,7 @@
 <?php
 
+// app/Http/Controllers/Auth/AuthenticatedSessionController.php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -26,23 +28,31 @@ class AuthenticatedSessionController extends Controller
     {
         // Autenticar al usuario
         $request->authenticate();
-    
+
         // Regenerar la sesión para mayor seguridad
         $request->session()->regenerate();
-    
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-    
-        // Verificar el rol del usuario y redirigir según corresponda
-        if ($user->rolId === 1) {
-            // Si el rol del usuario es 'admin' (suponiendo que '1' es el ID del rol 'admin')
-            return redirect()->route('dashboard');  // Redirige al dashboard del admin
+
+        // Obtener el usuario autenticado, incluyendo la relación con el rol
+        $user = Auth::user();  // No es necesario el 'load', ya que Laravel carga las relaciones definidas
+
+        // Verificar si el usuario tiene un rol asignado
+        if (!$user->rol) {
+            // Si no tiene rol, redirige a la página de inicio
+            return redirect('/');
         }
-    
-        // Si el usuario tiene un rol diferente (por ejemplo, 'usuario' u otro rol)
-        return redirect()->route('dashboard');  // Redirige al dashboard del usuario normal
-    }    
-    
+
+        // Verificar el rol del usuario y redirigir a la vista correspondiente
+        if ($user->rol->nombre === 'admin') {
+            return redirect()->route('dashboard');
+        }
+
+        if ($user->rol->nombre === 'mantenimiento') {
+            return redirect()->route('mantenimiento');
+        }
+
+        // Si no es ninguno de los roles anteriores, redirigir a alguna ruta predeterminada
+        return redirect('/');
+    }
 
     /**
      * Destroy an authenticated session.

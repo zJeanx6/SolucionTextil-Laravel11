@@ -3,9 +3,10 @@
 @section('title', 'Sobre Nosotros')
 
 @section('content')
-    <section class="sobreNosotros py-5">
-        <div class="container">
-            <div class="row text-center">
+
+<section class="sobreNosotros" style="height: 90vh; display: flex; align-items: center;">
+    <div class="container d-flex justify-content-center align-items-center" style="flex: 1;">
+        <div class="row w-100">
                 <!-- Proyecto -->
                 <x-sNosotros :image="asset('img/SolucionesTextilesLogo.jpg')" :title="'Proyecto'">
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio, nobis assumenda corporis quia atque doloremque voluptas reiciendis repellat sunt a temporibus debitis quis reprehenderit ratione.
@@ -28,4 +29,5 @@
             </div>
         </div>
     </section>
+
 @endsection

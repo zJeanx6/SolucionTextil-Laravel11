@@ -16,9 +16,7 @@
     @include('includes.headerIndex')
 
     <!-- Contenido principal de la vista -->
-    <main>
-        @yield('content')
-    </main>
+    @yield('content')
 
     <!-- Incluir el pie de página -->
     @include('includes.footerIndex')

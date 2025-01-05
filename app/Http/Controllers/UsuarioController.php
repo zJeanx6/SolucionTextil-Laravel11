@@ -16,7 +16,7 @@ class UsuarioController extends Controller
         $roles = \App\Models\Rol::all();  // Asumiendo que tienes un modelo Role
     
         // Pasar los roles a la vista
-        return view('usuarios.create', compact('roles'));
+        return view('admin.crearUsuarios', compact('roles'));
     }
     
 
@@ -48,6 +48,6 @@ class UsuarioController extends Controller
         $usuario->estadoId = $request->input('estadoId') ?? 1;  // Estado por defecto 'activo'
         $usuario->save();
 
-        return redirect()->route('usuarios.create')->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
     }
 }
