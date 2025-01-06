@@ -1,7 +1,5 @@
 <?php
-
-// app/Http/Controllers/RoleRedirectController.php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,13 +8,16 @@ use App\Models\User;
 class RoleRedirectController extends Controller
 {
     /**
-     * Mostrar el dashboard para administradores
+     * Mostrar el dashboard para administradores.
      */
     public function admin()
     {
         return view('admin.dashboard');
     }
 
+    /**
+     * Mostrar la lista de usuarios con sus roles.
+     */
     public function usuarios()
     {
         $usuarios = User::with('rol')->get(); // Obtener todos los usuarios con sus roles
@@ -24,11 +25,10 @@ class RoleRedirectController extends Controller
     }
 
     /**
-     * Mostrar la vista para mantenimiento
+     * Mostrar la vista para mantenimiento.
      */
     public function mantenimiento()
     {
         return view('mantenimiento.dashboard');
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -15,7 +15,7 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Muestra la vista de registro.
      */
     public function create(): View
     {
@@ -23,28 +23,33 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
+     * Maneja una solicitud de registro entrante.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validar los datos del formulario de registro
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Crear un nuevo usuario
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        // Disparar el evento de registro
         event(new Registered($user));
 
+        // Autenticar al usuario
         Auth::login($user);
 
+        // Redirigir al usuario al dashboard
         return redirect(route('dashboard', absolute: false));
     }
 }

@@ -1,7 +1,5 @@
 <?php
-
-// app/Http/Controllers/Auth/AuthenticatedSessionController.php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -14,7 +12,7 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Muestra la vista de inicio de sesión.
      */
     public function create(): View
     {
@@ -22,7 +20,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Maneja una solicitud de autenticación entrante.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -32,8 +30,8 @@ class AuthenticatedSessionController extends Controller
         // Regenerar la sesión para mayor seguridad
         $request->session()->regenerate();
 
-        // Obtener el usuario autenticado, incluyendo la relación con el rol
-        $user = Auth::user();  // No es necesario el 'load', ya que Laravel carga las relaciones definidas
+        // Obtener el usuario autenticado
+        $user = Auth::user();
 
         // Verificar si el usuario tiene un rol asignado
         if (!$user->rol) {
@@ -55,16 +53,20 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * Destruye una sesión autenticada.
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Cerrar la sesión del usuario
         Auth::guard('web')->logout();
 
+        // Invalidar la sesión actual
         $request->session()->invalidate();
 
+        // Regenerar el token de la sesión
         $request->session()->regenerateToken();
 
+        // Redirigir a la página de inicio
         return redirect('/');
     }
 }

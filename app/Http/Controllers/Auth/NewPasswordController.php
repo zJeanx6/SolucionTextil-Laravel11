@@ -1,5 +1,5 @@
 <?php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -15,7 +15,14 @@ use Illuminate\View\View;
 class NewPasswordController extends Controller
 {
     /**
-     * Display the password reset view.
+     * Muestra la vista para restablecer la contraseña.
+     *
+     * Este método simplemente devuelve la vista que contiene el formulario
+     * de restablecimiento de contraseña, pasando el objeto de solicitud
+     * como variable para poder reutilizar los datos de la solicitud.
+     *
+     * @param Request $request La solicitud HTTP entrante.
+     * @return View La vista con el formulario de restablecimiento.
      */
     public function create(Request $request): View
     {
@@ -23,39 +30,48 @@ class NewPasswordController extends Controller
     }
 
     /**
-     * Handle an incoming new password request.
+     * Maneja la solicitud de restablecimiento de contraseña.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * Este método valida los datos del formulario de restablecimiento
+     * y luego intenta restablecer la contraseña del usuario. Si la
+     * operación es exitosa, la contraseña se actualiza en la base de datos.
+     * Si ocurre un error, se devuelve una respuesta con el mensaje de error.
+     *
+     * @param Request $request La solicitud HTTP entrante.
+     * @return RedirectResponse Redirige al usuario dependiendo del resultado del restablecimiento.
+     * @throws \Illuminate\Validation\ValidationException Si los datos no cumplen con las reglas de validación.
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validamos los datos del formulario de restablecimiento de contraseña.
         $request->validate([
-            'token' => ['required'],
-            'email' => ['required', 'email'],
+            'token' => ['required'], 
+            'email' => ['required', 'email'], 
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
+        // Intentamos restablecer la contraseña del usuario.
+        // Si es exitoso, actualizamos la contraseña en el modelo de usuario
+        // y la guardamos en la base de datos. Si falla, mostramos el error.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
+                // Si la validación fue exitosa, actualizamos la contraseña.
                 $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+                    'password' => Hash::make($request->password), // Encriptamos la nueva contraseña.
+                    'remember_token' => Str::random(60), // Generamos un nuevo token de "remember me".
+                ])->save(); // Guardamos los cambios en el modelo de usuario.
 
+                //lanzamos el evento de restablecimiento de contraseña para notificar al sistema.
                 event(new PasswordReset($user));
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
+        // Si el restablecimiento fue exitoso, redirigimos al usuario al login.
+        // Si ocurrió un error, redirigimos de nuevo al formulario con el mensaje de error.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+                    ? redirect()->route('login')->with('status', __($status)) // Redirige al login con un mensaje de éxito.
+                    : back()->withInput($request->only('email')) // Redirige de vuelta al formulario con los datos ingresados.
+                        ->withErrors(['email' => __($status)]); // Muestra los errores de la operación de restablecimiento.
     }
 }

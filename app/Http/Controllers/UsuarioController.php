@@ -1,5 +1,5 @@
 <?php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers;
 
 use App\Models\User; 
@@ -10,16 +10,21 @@ use App\Models\Rol;
 
 class UsuarioController extends Controller
 {
+    /**
+     * Mostrar el formulario para crear un nuevo usuario.
+     */
     public function create()
     {
         // Recuperar todos los roles de la base de datos
-        $roles = \App\Models\Rol::all();  // Asumiendo que tienes un modelo Role
+        $roles = Rol::all();  // Asumiendo que tienes un modelo Rol
     
         // Pasar los roles a la vista
         return view('admin.crearUsuarios', compact('roles'));
     }
     
-
+    /**
+     * Almacenar un nuevo usuario en la base de datos.
+     */
     public function store(Request $request)
     {
         // Validar los datos del formulario
@@ -33,6 +38,7 @@ class UsuarioController extends Controller
             'estadoId' => 'nullable|exists:estados,id'
         ]);
 
+        // Si la validación falla, redirigir de vuelta con errores
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -48,6 +54,7 @@ class UsuarioController extends Controller
         $usuario->estadoId = $request->input('estadoId') ?? 1;  // Estado por defecto 'activo'
         $usuario->save();
 
+        // Redirigir con un mensaje de éxito
         return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
     }
 }

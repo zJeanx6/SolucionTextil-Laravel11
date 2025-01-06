@@ -1,5 +1,5 @@
 <?php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class ConfirmablePasswordController extends Controller
 {
     /**
-     * Show the confirm password view.
+     * Muestra la vista de confirmación de contraseña.
      */
     public function show(): View
     {
@@ -20,10 +20,11 @@ class ConfirmablePasswordController extends Controller
     }
 
     /**
-     * Confirm the user's password.
+     * Confirma la contraseña del usuario.
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validar la contraseña del usuario
         if (! Auth::guard('web')->validate([
             'email' => $request->user()->email,
             'password' => $request->password,
@@ -33,8 +34,10 @@ class ConfirmablePasswordController extends Controller
             ]);
         }
 
+        // Almacenar el tiempo de confirmación de la contraseña en la sesión
         $request->session()->put('auth.password_confirmed_at', time());
 
+        // Redirigir al usuario a la ruta deseada
         return redirect()->intended(route('dashboard', absolute: false));
     }
 }

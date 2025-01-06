@@ -1,5 +1,5 @@
 <?php
-
+// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +11,7 @@ use Illuminate\View\View;
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Display the password reset link request view.
+     * Muestra la vista de solicitud de enlace de restablecimiento de contraseña.
      */
     public function create(): View
     {
@@ -19,7 +19,7 @@ class PasswordResetLinkController extends Controller
     }
 
     /**
-     * Handle an incoming password reset link request.
+     * Maneja una solicitud entrante de enlace de restablecimiento de contraseña.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -29,9 +29,9 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
+        // Enviaremos el enlace de restablecimiento de contraseña a este usuario. Una vez que hayamos intentado
+        // enviar el enlace, examinaremos la respuesta y veremos el mensaje que
+        // necesitamos mostrar al usuario. Finalmente, enviaremos una respuesta adecuada.
         $status = Password::sendResetLink(
             $request->only('email')
         );
