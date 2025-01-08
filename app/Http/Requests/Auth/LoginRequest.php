@@ -47,6 +47,13 @@ class LoginRequest extends FormRequest
             // Incrementar el contador de intentos fallidos
             RateLimiter::hit($this->throttleKey());
 
+            // Verificar si el usuario existe para proporcionar un mensaje de error más específico
+            if (Auth::getProvider()->retrieveByCredentials($this->only('email'))) {
+                throw ValidationException::withMessages([
+                    'password' => trans('auth.password'),
+                ]);
+            }
+
             // Lanzar una excepción de validación si la autenticación falla
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
@@ -90,6 +97,6 @@ class LoginRequest extends FormRequest
     public function throttleKey(): string
     {
         // Generar una clave única para la limitación de tasa basada en el email y la IP del usuario
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }

@@ -1,9 +1,9 @@
-<div class="col-12 col-md-6 col-lg-3 mb-4">
-    <div class="card h-100 shadow">
-        <img src="{{ $image ?? ''}}" class="card-img-top" alt="Imagen" style="object-fit: cover; height: 200px;">
-        <div class="card-body">
-            <h4 class="card-title">{{ $title ?? ''}}</h4>
-            <p class="card-text">{{ $slot ?? '' }}</p>
+<div class="col-span-1 mb-4">
+    <div class="bg-white rounded-lg shadow-lg h-full">
+        <img src="{{ $image ?? ''}}" class="w-full h-48 object-cover rounded-t-lg" alt="Imagen">
+        <div class="p-4">
+            <h4 class="text-xl font-bold">{{ $title ?? ''}}</h4>
+            <p class="mt-2 text-gray-600">{{ $slot ?? '' }}</p>
         </div>
     </div>
 </div>

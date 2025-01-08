@@ -58,3 +58,23 @@ class UsuarioController extends Controller
         return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
     }
 }
+
+
+// $validator = Validator::make($request->all(), [
+//     'nombre' => 'required|string|max:255',
+//     'apellido' => 'required|string|max:255',
+//     'email' => 'required|email|unique:usuarios,email',
+//     'contacto' => 'nullable|string|max:15',
+//     'password' => 'required|string|min:8|confirmed',
+//     'rolId' => 'required|exists:roles,id',
+//     'estadoId' => 'nullable|exists:estados,id'
+// ], [
+//     'nombre.required' => 'El nombre es obligatorio.',
+//     'apellido.required' => 'El apellido es obligatorio.',
+//     'email.required' => 'El correo electrónico es obligatorio.',
+//     'email.email' => 'El correo electrónico debe ser una dirección válida.',
+//     'password.required' => 'La contraseña es obligatoria.',
+//     'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+//     'rolId.required' => 'El rol es obligatorio.',
+//     'rolId.exists' => 'El rol seleccionado no existe.',
+// ]);

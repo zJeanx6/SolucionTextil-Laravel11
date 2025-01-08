@@ -7,12 +7,30 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RoleRedirectController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+
+// Route::get('/test-email', function () {
+//     Mail::raw('Este es un correo de prueba', function ($message) {
+//         $message->to('daniela_manrique@soy.sena.edu.co')->subject('Correo de prueba');
+//     });
+
+//     return 'Correo enviado';
+// });
 
 // Ruta para la página principal
 Route::get('/', [IndexController::class, 'index']);
 
 // Ruta para la página "Sobre Nosotros"
 Route::get('/sobre-nosotros', [IndexController::class, 'sobreNosotros'])->name('sobre-nosotros');
+
+Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('password.request');
+
+Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.email');
 
 // Grupo de rutas para usuarios con rol de administrador
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {

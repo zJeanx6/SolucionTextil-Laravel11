@@ -7,60 +7,54 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <body>
-        <section class="sobreNosotros" style="height: 80vh; display: flex; align-items: center;">
-            <div class="container d-flex justify-content-center align-items-center" style="flex: 1;">
-                <div class="row w-100">
-                    <form method="POST" action="{{ route('login') }}" enctype="multipart/form-data" 
-                        class="mx-auto p-4 bg-white rounded shadow" style="max-width: 600px;">
-                        <h1 class="text-center mb-4">Inicio De Sesión</h1>
+    <section class="flex items-center justify-center min-h-screen">
+        <div class="container mx-auto flex justify-center items-center">
+            <div class="w-full max-w-md">
+                <form method="POST" action="{{ route('login') }}" class="bg-white p-6 rounded-lg shadow-lg">
+                    <h1 class="text-center text-2xl font-bold mb-4">Inicio De Sesión</h1>
         
-                        @csrf
+                    @csrf
         
-                        <!-- Email Address -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="email" name="email" id="email" 
-                                class="form-control" placeholder="Ingrese su Email" required autofocus autocomplete="username" value="{{ old('email') }}">
-                            @error('email')
-                                <div class="text-danger mt-2">{{ 'Credenciales incorrectas' }}</div>
-                            @enderror
-                        </div>
+                    <!-- Email Address -->
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700">Email:</label>
+                        <input type="email" name="email" id="email" 
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ingrese su Email" required autofocus autocomplete="username" value="{{ old('email') }}">
+                        @error('email')
+                            <div class="text-red-500 mt-2">{{ __($message) }}</div>
+                        @enderror
+                    </div>
         
-                        <!-- Password -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña:</label>
-                            <input type="password" name="password" id="password" 
-                                class="form-control" placeholder="Ingrese su Contraseña" required autocomplete="current-password">
-                            @error('password')
-                                <div class="text-danger mt-2">{{ 'Credenciales incorrectas' }}</div>
-                            @enderror
-                        </div>
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700">Contraseña:</label>
+                        <input type="password" name="password" id="password" 
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ingrese su Contraseña" required autocomplete="current-password">
+                        @error('password')
+                            <div class="text-red-500 mt-2">{{ __($message) }}</div>
+                        @enderror
+                    </div>
         
-                        {{-- Si deseas incluir "Recuerdame" --}}
-                        {{-- <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
-                            <label class="form-check-label" for="remember_me">Recuerdame</label>
-                        </div> --}}
+                    {{-- Si deseas incluir "Recuerdame" --}}
+                    {{-- <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
+                        <label class="form-check-label" for="remember_me">Recuerdame</label>
+                    </div> --}}
         
-                        <div class="text-center">
-                            @if (Route::has('password.request'))
-                                <a class="d-block mb-3 text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                                    {{ __('¿Olvidaste tu contraseña?') }}
-                                </a>
-                            @endif
-                            
-
-                            <button type="submit" class="btn btn-success w-100" style="background-color: #39a900;">
-                                Ingresar
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="text-center">
+                        @if (Route::has('password.request'))
+                            <a class="block mb-3 text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                                {{ __('¿Olvidaste tu contraseña?') }}
+                            </a>
+                        @endif
+                        
+                        <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                            Ingresar
+                        </button>
+                    </div>
+                </form>
             </div>
-        </section>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+        </div>
+    </section>
 
 @endsection
