@@ -29,6 +29,7 @@ class UsuarioController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
+            'id' => 'required|string|max:20|unique:usuarios,id',
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios,email',
@@ -45,6 +46,7 @@ class UsuarioController extends Controller
 
         // Crear un nuevo usuario
         $usuario = new User();
+        $usuario->id = $request->input('id');
         $usuario->nombre = $request->input('nombre');
         $usuario->apellido = $request->input('apellido');
         $usuario->email = $request->input('email');
@@ -57,24 +59,67 @@ class UsuarioController extends Controller
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
     }
+
+    /**
+     * Mostrar el formulario para editar un usuario existente.
+     */
+    public function edit($id)
+    {
+        $usuario = User::findOrFail($id);
+        $roles = Rol::all();  // Asumiendo que tienes un modelo Rol
+
+        return view('admin.editarUsuario', compact('usuario', 'roles'));
+    }
+
+    /**
+     * Actualizar un usuario existente en la base de datos.
+     */
+    public function update(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|string|max:20|unique:usuarios,id,' . $id,
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email,' . $id,
+            'contacto' => 'nullable|string|max:15',
+            'password' => 'nullable|string|min:8|confirmed',
+            'rolId' => 'required|exists:roles,id',
+            'estadoId' => 'nullable|exists:estados,id'
+        ]);
+
+        // Si la validación falla, redirigir de vuelta con errores
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Buscar el usuario existente
+        $usuario = User::findOrFail($id);
+        $usuario->id = $request->input('id');
+        $usuario->nombre = $request->input('nombre');
+        $usuario->apellido = $request->input('apellido');
+        $usuario->email = $request->input('email');
+        $usuario->contacto = $request->input('contacto');
+        if ($request->filled('password')) {
+            $usuario->password = Hash::make($request->input('password'));  // Cifrado de la contraseña
+        }
+        $usuario->rolId = $request->input('rolId');
+        $usuario->estadoId = $request->input('estadoId') ?? $usuario->estadoId;
+        $usuario->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('ver-usuarios')->with('success', 'Usuario actualizado correctamente.');
+    }
+
+    /**
+     * Eliminar un usuario existente de la base de datos.
+     */
+    public function destroy($id)
+    {
+        $usuario = User::findOrFail($id);
+        $usuario->delete();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('ver-usuarios')->with('success', 'Usuario eliminado correctamente.');
+    }
 }
-
-
-// $validator = Validator::make($request->all(), [
-//     'nombre' => 'required|string|max:255',
-//     'apellido' => 'required|string|max:255',
-//     'email' => 'required|email|unique:usuarios,email',
-//     'contacto' => 'nullable|string|max:15',
-//     'password' => 'required|string|min:8|confirmed',
-//     'rolId' => 'required|exists:roles,id',
-//     'estadoId' => 'nullable|exists:estados,id'
-// ], [
-//     'nombre.required' => 'El nombre es obligatorio.',
-//     'apellido.required' => 'El apellido es obligatorio.',
-//     'email.required' => 'El correo electrónico es obligatorio.',
-//     'email.email' => 'El correo electrónico debe ser una dirección válida.',
-//     'password.required' => 'La contraseña es obligatoria.',
-//     'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-//     'rolId.required' => 'El rol es obligatorio.',
-//     'rolId.exists' => 'El rol seleccionado no existe.',
-// ]);

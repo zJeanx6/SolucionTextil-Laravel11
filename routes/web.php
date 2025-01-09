@@ -42,6 +42,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/crear-usuarios', [UsuarioController::class, 'create'])->name('admin.crearUsuarios');
     // Ruta para ver usuarios
     Route::get('/admin/ver-usuarios', [RoleRedirectController::class, 'usuarios'])->name('ver-usuarios');
+    // Ruta para editar usuarios
+    Route::get('/admin/editar-usuario/{id}', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/admin/editar-usuario/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+    // Ruta para eliminar usuarios
+    Route::delete('/admin/eliminar-usuario/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 // Grupo de rutas para usuarios con rol de mantenimiento

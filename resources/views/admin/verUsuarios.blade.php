@@ -14,6 +14,7 @@
                         <table class="min-w-full bg-white border border-gray-200">
                             <thead>
                                 <tr>
+                                    <th class="py-2 px-4 border-b border-gray-200">Documento</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Nombre</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Apellido</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Email</th>
@@ -25,14 +26,19 @@
                             <tbody>
                                 @foreach ($usuarios as $usuario)
                                     <tr>
+                                        <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->id }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->nombre }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->apellido }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->email }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->contacto }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->rol->nombre }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">
-                                            <button class="bg-blue-500 hover:bg-blue-700 font-bold py-1 px-2 rounded">Actualizar</button>
-                                            <button class="bg-red-500 hover:bg-red-700 font-bold py-1 px-2 rounded">Eliminar</button>
+                                            <a href="{{ route('usuarios.edit', $usuario->id) }}" class="bg-blue-500 hover:bg-blue-700 font-bold text-white py-1 px-2 rounded">Actualizar</a>
+                                            <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="bg-red-500 hover:bg-red-700 font-bold text-white py-1 px-2 rounded">Eliminar</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
