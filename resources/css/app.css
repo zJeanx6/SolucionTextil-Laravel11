@@ -1,5 +1,8 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+/* resources/css/app.css */
 
+/* Importar las directivas básicas de Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Aquí puedes agregar personalizaciones adicionales si es necesario */
