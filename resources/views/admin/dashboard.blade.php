@@ -4,7 +4,7 @@
     <x-slot name="header">
         <!-- Título del Dashboard -->
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Dashboard') }}
+            {{ __('Bienvenido al menú de administración') }}
         </h2>
     </x-slot>
 
@@ -13,11 +13,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Mensaje de bienvenida -->
-                    <h1>Hola administrador</h1>
-                    {{ __("You're logged in!") }}
-                    <!-- Información del usuario autenticado -->
-                    <p>Nombre: {{ Auth::user()->nombre }}</p>
-                    <p>Rol: {{ Auth::user()->rol->nombre }}</p>
+                    {{ __("¡Has iniciado sesión!") }}
+                    <h1>Es genial tenerte de regreso {{ Auth::user()->nombre }}, con rol: {{ Auth::user()->rol->nombre }}.</h1>
                 </div>
             </div>
         </div>

@@ -43,6 +43,31 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
+                <!-- MENÚ DESPLEGABLE DE ROLES -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <!-- Botón del menú desplegable de ROLES -->
+                            <button @click="openUsers = ! openUsers" class="inline-flex items-center px-3 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-roles') || request()->routeIs('crear-roles') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
+                                <div>{{ __('Roles') }}</div>
+                                <div class="ms-1">  
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 111.414 1.414l-4 4a1 1 01-1.414 0l-4-4a1 1 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <!-- Opciones del menú desplegable de ROLES -->
+                            {{-- <x-dropdown-link :href="route('ver-roles')" :active="request()->routeIs('ver-roles')">
+                                {{ __('Ver Roles') }}
+                            </x-dropdown-link> --}}
+                            <x-dropdown-link :href="route('crear-roles')" :active="request()->routeIs('crear-roles')">
+                                {{ __('Crear Roles') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
             </div>
             <!-- MENÚ DESPLEGABLE DE CONFIGURACIÓN -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

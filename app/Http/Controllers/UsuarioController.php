@@ -19,7 +19,7 @@ class UsuarioController extends Controller
         $roles = Rol::all();  // Asumiendo que tienes un modelo Rol
     
         // Pasar los roles a la vista
-        return view('admin.crearUsuarios', compact('roles'));
+        return view('admin.usuario.crearUsuarios', compact('roles'));
     }
     
     /**
@@ -68,7 +68,7 @@ class UsuarioController extends Controller
         $usuario = User::findOrFail($id);
         $roles = Rol::all();  // Asumiendo que tienes un modelo Rol
 
-        return view('admin.editarUsuario', compact('usuario', 'roles'));
+        return view('admin.usuario.editarUsuario', compact('usuario', 'roles'));
     }
 
     /**

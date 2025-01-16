@@ -2,13 +2,14 @@
 
 <?php
 
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RoleRedirectController;
+use App\Http\Controllers\RolController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
 
 // Route::get('/test-email', function () {
 //     Mail::raw('Este es un correo de prueba', function ($message) {
@@ -34,19 +35,21 @@ Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
 
 // Grupo de rutas para usuarios con rol de administrador
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    // Ruta para el dashboard de administrador
-    Route::get('/admin/dashboard', [RoleRedirectController::class, 'admin'])->name('dashboard');
-    // Ruta para almacenar usuarios
-    Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
-    // Ruta para la creación de usuarios
-    Route::get('/admin/crear-usuarios', [UsuarioController::class, 'create'])->name('admin.crearUsuarios');
-    // Ruta para ver usuarios
-    Route::get('/admin/ver-usuarios', [RoleRedirectController::class, 'usuarios'])->name('ver-usuarios');
-    // Ruta para editar usuarios
-    Route::get('/admin/editar-usuario/{id}', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+
+    Route::get('/admin/dashboard', [RoleRedirectController::class, 'admin'])->name('dashboard');     // Ruta para el dashboard de administrador
+
+    //Rutas para el control de USUARIOS
+    Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');     // Ruta para almacenar usuarios
+    Route::get('/admin/crear-usuarios', [UsuarioController::class, 'create'])->name('admin.crearUsuarios');     // Ruta para la creación de usuarios
+    Route::get('/admin/ver-usuarios', [RoleRedirectController::class, 'usuarios'])->name('ver-usuarios');    // Ruta para ver usuarios
+    Route::get('/admin/editar-usuario/{id}', [UsuarioController::class, 'edit'])->name('usuarios.edit');    // Rutas para editar usuarios
     Route::put('/admin/editar-usuario/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
-    // Ruta para eliminar usuarios
-    Route::delete('/admin/eliminar-usuario/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+    Route::delete('/admin/eliminar-usuario/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');     // Ruta para eliminar usuarios
+
+    //Rutas para el control de ROLES
+    Route::post('/roles', [RolController::class, 'store'])->name('crear-roles');     // Ruta para almacenar roles
+    Route::get('/admin/crear-roles', [RolController::class, 'create'])->name('crear-roles');     // Ruta para la creación de roles
+    Route::get('/admin/rol/ver-roles', [RolController::class, 'index'])->name('ver-roles');     // Ruta ver roles
 });
 
 // Grupo de rutas para usuarios con rol de mantenimiento
