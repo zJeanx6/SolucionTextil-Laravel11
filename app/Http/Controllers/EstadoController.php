@@ -3,18 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Rol;
+use App\Models\Estado;
 use Illuminate\Support\Facades\Validator;
 
-class RolController extends Controller
+class EstadoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $roles = Rol::all();
-        return view('admin.rol.verRoles', compact('roles'));
+        $estados = Estado::all();
+        return view('admin.estado.verEstados', compact('estados'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -24,21 +32,21 @@ class RolController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255|unique:roles,nombre',
+            'nombre' => 'required|string|max:255|unique:estados,nombre',
         ]);
 
         // Si la validación falla, redirigir de vuelta con errores
         if ($validator->fails()) {
-            return redirect()->route('ver-roles')->withErrors($validator)->withInput();
+            return redirect()->route('ver-estados')->withErrors($validator)->withInput();
         }
 
-        // Crear un nuevo rol
-        $rol = new Rol();
-        $rol->nombre = $request->input('nombre');
-        $rol->save();
+        // Crear un nuevo estado
+        $estado = new Estado();
+        $estado->nombre = $request->input('nombre');
+        $estado->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-roles')->with('success', 'Rol creado correctamente.');
+        return redirect()->route('ver-estados')->with('success', 'Estado creado correctamente.');
     }
 
     /**
@@ -52,10 +60,9 @@ class RolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $rol = Rol::findOrFail($id);
-        return view('admin.rol.editarRoles', compact('rol'));
+        //
     }
 
     /**
@@ -65,7 +72,7 @@ class RolController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255|unique:roles,nombre,' . $id,
+            'nombre' => 'required|string|max:255|unique:estados,nombre,' . $id,
         ]);
 
         // Si la validación falla, redirigir de vuelta con errores
@@ -73,13 +80,13 @@ class RolController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Buscar el rol existente
-        $rol = Rol::findOrFail($id);
-        $rol->nombre = $request->input('nombre');
-        $rol->save();
+        // Buscar el estado existente
+        $estado = Estado::findOrFail($id);
+        $estado->nombre = $request->input('nombre');
+        $estado->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-roles')->with('success', 'Rol actualizado correctamente.');
+        return redirect()->route('ver-estados')->with('success', 'Estado actualizado correctamente.');
     }
 
     /**
@@ -87,10 +94,10 @@ class RolController extends Controller
      */
     public function destroy($id)
     {
-        $rol = Rol::findOrFail($id);
-        $rol->delete();
+        $estado = Estado::findOrFail($id);
+        $estado->delete();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-roles')->with('success', 'Rol eliminado correctamente.');
+        return redirect()->route('ver-estados')->with('success', 'Estado eliminado correctamente.');
     }
 }

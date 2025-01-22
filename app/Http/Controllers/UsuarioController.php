@@ -1,5 +1,4 @@
 <?php
-// <!-- {{-- REVISADO Y COMENTADO --}} -->
 namespace App\Http\Controllers;
 
 use App\Models\User; 
@@ -7,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Rol;
+use App\Models\Estado;
 
 class UsuarioController extends Controller
 {
@@ -53,11 +53,22 @@ class UsuarioController extends Controller
         $usuario->contacto = $request->input('contacto');
         $usuario->password = Hash::make($request->input('password'));  // Cifrado de la contraseña
         $usuario->rolId = $request->input('rolId');
-        $usuario->estadoId = $request->input('estadoId') ?? 1;  // Estado por defecto 'activo'
+        $usuario->estadoId = $request->input('estadoId') ?? 2;  // Estado por defecto 'activo'
         $usuario->save();
 
         // Redirigir con un mensaje de éxito
         return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
+    }
+
+    /**
+     * Mostrar la lista de usuarios.
+     */
+    public function index()
+    {
+        $usuarios = User::with('rol', 'estado')->get(); // Obtener todos los usuarios con sus roles y estados
+        $roles = Rol::all(); // Obtener todos los roles
+        $estados = Estado::all(); // Obtener todos los estados
+        return view('admin.usuario.verUsuarios', compact('usuarios', 'roles', 'estados'));
     }
 
     /**
