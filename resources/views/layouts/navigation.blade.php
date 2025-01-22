@@ -120,15 +120,12 @@
         </div>
         <!-- Menú desplegable de usuarios responsivo -->
         <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
-            <button @click="openUsers = ! openUsers" class="w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-usuarios') || request()->routeIs('admin.crearUsuarios') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
+            <button @click="openUsers = ! openUsers" class="w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-usuarios') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
                 {{ __('Usuarios') }}
             </button>
             <div :class="{'block': openUsers, 'hidden': ! openUsers}" class="hidden space-y-1">
                 <x-responsive-nav-link :href="route('ver-usuarios')" :active="request()->routeIs('ver-usuarios')">
                     {{ __('Ver Usuarios') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.crearUsuarios')" :active="request()->routeIs('admin.crearUsuarios')">
-                    {{ __('Crear Usuario') }}
                 </x-responsive-nav-link>
             </div>
         </div>
