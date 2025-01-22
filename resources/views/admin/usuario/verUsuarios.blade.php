@@ -150,7 +150,7 @@
                         @error('apellido') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="edit-email" class="block text-sm font-medium text-gray-700">Emaill:</label>
+                        <label for="edit-email" class="block text-sm font-medium text-gray-700">Email:</label>
                         <input type="email" name="email" id="edit-email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                         @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
