@@ -63,39 +63,54 @@
                 <h2 class="text-xl font-bold mb-4">Agregar nuevo Usuario</h2>
                 <form action="{{ route('usuarios.store') }}" method="POST" id="form__registerUser">
                     @csrf
-                    <div class="mb-4">
+                    <div class="mb-4" id= "grupo__id">
                         <label for="id" class="block text-sm font-medium text-gray-700">Documento:</label>
-                        <input type="text" name="id" id="id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('id') }}" required>
+                        <input type="number" name="id" id="id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('id') }}" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">El documento debe ser un número válido.</p>
                         @error('id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__nombre">
                         <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
                         <input type="text" name="nombre" id="nombre" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('nombre') }}" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">El nombre debe tener de 3 a 40 letras.</p>
                         @error('nombre') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__apellido">
                         <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido:</label>
                         <input type="text" name="apellido" id="apellido" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('apellido') }}" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">El apellido debe tener de 3 a 40 letras.</p>
                         @error('apellido') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__email">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
                         <input type="email" name="email" id="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('email') }}" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">Algo esta mal con su correo.</p>
                         @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__contacto">
                         <label for="contacto" class="block text-sm font-medium text-gray-700">Contacto:</label>
-                        <input type="text" name="contacto" id="contacto" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('contacto') }}" required>
+                        <input type="number" name="contacto" id="contacto" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" value="{{ old('contacto') }}" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">El numero de contacto puede tener hasta 10 numeros.</p>
                         @error('contacto') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__password">
                         <label for="password" class="block text-sm font-medium text-gray-700">Contraseña:</label>
                         <input type="password" name="password" id="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">La contraseña solo puede tener de 8 a 12 caracteres.</p>
                         @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" id="grupo__password_confirmation">
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Contraseña:</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                        <i class="formulario__validacion-estado"></i>
+                        <p class="formulario__input-error text-red-500 text-sm hidden">La contraseña no coincide.</p>
+                        @error('password_confirmation') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="rolId" class="block text-sm font-medium text-gray-700">Rol:</label>
@@ -119,7 +134,8 @@
                     </div>
                     <div class="text-right">
                         <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="document.getElementById('modal-create').classList.add('hidden'); document.getElementById('overlay').classList.add('hidden')">Cancelar</button>
-                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
+                        <button type="submit" id="guardar"class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
+                        <p class="formulario__mensaje-exito" id="formulario__mensaje-exito">Formulario enviado exitosamente!</p>
                     </div>
                 </form>
             </div>
@@ -211,4 +227,6 @@
             document.getElementById('overlay').classList.remove('hidden');
         }
     </script>
+@vite('resources/js/Validaciones/crearUsuario.js')
+
 </x-app-layout>
