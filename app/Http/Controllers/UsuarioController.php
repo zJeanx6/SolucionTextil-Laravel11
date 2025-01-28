@@ -19,7 +19,7 @@ class UsuarioController extends Controller
         $roles = Rol::all();  // Asumiendo que tienes un modelo Rol
     
         // Pasar los roles a la vista
-        return view('admin.usuario.crearUsuarios', compact('roles'));
+        return view('admin.usuario.verUsuarios', compact('roles'));
     }
     
     /**
@@ -57,7 +57,7 @@ class UsuarioController extends Controller
         $usuario->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('admin.crearUsuarios')->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('ver-usuarios')->with('success', 'Usuario creado correctamente.');
     }
 
     /**
