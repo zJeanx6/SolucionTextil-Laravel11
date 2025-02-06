@@ -79,7 +79,7 @@ class RolController extends Controller
         $rol->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-roles')->with('success', 'Rol actualizado correctamente.');
+        return redirect()->route('ver-roles')->with('update_success', 'Rol actualizado correctamente.');
     }
 
     /**
@@ -91,6 +91,6 @@ class RolController extends Controller
         $rol->delete();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-roles')->with('success', 'Rol eliminado correctamente.');
+        return redirect()->route('ver-roles')->with('delete_success', 'Rol eliminado correctamente.');
     }
 }

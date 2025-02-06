@@ -47,7 +47,7 @@
                     <x-dropdown align="left" width="48">
                         <x-slot name="trigger">
                             <!-- Botón del menú desplegable de UTILIDAD -->
-                            <button @click="openUtilidad = ! openUtilidad" class="inline-flex items-center px-3 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-estados') || request()->routeIs('ver-marcas') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
+                            <button @click="openUtilidad = ! openUtilidad" class="inline-flex items-center px-3 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-estados') || request()->routeIs('ver-marcas') || request()->routeIs('ver-tallas') || request()->routeIs('ver-colores') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
                                 <div>{{ __('Utilidad') }}</div>
                                 <div class="ms-1">  
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -64,6 +64,14 @@
                             <!-- Opciones del menú desplegable de MARCAS -->
                             <x-dropdown-link :href="route('ver-marcas')" :active="request()->routeIs('ver-marcas')">
                                 {{ __('Marcas') }}
+                            </x-dropdown-link>
+                            <!-- Opciones del menú desplegable de TALLAS -->
+                            <x-dropdown-link :href="route('ver-tallas')" :active="request()->routeIs('ver-tallas')">
+                                {{ __('Tallas') }}
+                            </x-dropdown-link>
+                            <!-- Opciones del menú desplegable de COLORES -->
+                            <x-dropdown-link :href="route('ver-colores')" :active="request()->routeIs('ver-colores')">
+                                {{ __('Colores') }}
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
@@ -126,6 +134,29 @@
             <div :class="{'block': openUsers, 'hidden': ! openUsers}" class="hidden space-y-1">
                 <x-responsive-nav-link :href="route('ver-usuarios')" :active="request()->routeIs('ver-usuarios')">
                     {{ __('Ver Usuarios') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('ver-roles')" :active="request()->routeIs('ver-roles')">
+                    {{ __('Ver Roles') }}
+                </x-responsive-nav-link>
+            </div>
+        </div>
+        <!-- Menú desplegable de utilidad responsivo -->
+        <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
+            <button @click="openUtilidad = ! openUtilidad" class="w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out {{ request()->routeIs('ver-estados') || request()->routeIs('ver-marcas') || request()->routeIs('ver-tallas') || request()->routeIs('ver-colores') ? 'text-gray-900 border-b-2 border-indigo-400' : '' }}">
+                {{ __('Utilidad') }}
+            </button>
+            <div :class="{'block': openUtilidad, 'hidden': ! openUtilidad}" class="hidden space-y-1">
+                <x-responsive-nav-link :href="route('ver-estados')" :active="request()->routeIs('ver-estados')">
+                    {{ __('Ver Estados') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('ver-marcas')" :active="request()->routeIs('ver-marcas')">
+                    {{ __('Ver Marcas') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('ver-tallas')" :active="request()->routeIs('ver-tallas')">
+                    {{ __('Ver Tallas') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('ver-colores')" :active="request()->routeIs('ver-colores')">
+                    {{ __('Ver Colores') }}
                 </x-responsive-nav-link>
             </div>
         </div>

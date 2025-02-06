@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Talla;
+use App\Models\Color;
 use Illuminate\Support\Facades\Validator;
 
-class TallaController extends Controller
+class ColorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tallas = Talla::all();
-        return view('admin.talla.verTallas', compact('tallas'));
+        $colores = Color::all();
+        return view('admin.color.verColores', compact('colores'));
     }
 
     /**
@@ -32,21 +32,21 @@ class TallaController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'letra' => 'required|string|max:255|unique:tallas,letra',
+            'nombre' => 'required|string|max:255|unique:colores,nombre',
         ]);
 
         // Si la validación falla, redirigir de vuelta con errores
         if ($validator->fails()) {
-            return redirect()->route('ver-tallas')->withErrors($validator)->withInput();
+            return redirect()->route('ver-colores')->withErrors($validator)->withInput();
         }
 
-        // Crear una nueva talla
-        $talla = new Talla();
-        $talla->letra = $request->input('letra');
-        $talla->save();
+        // Crear un nuevo color
+        $color = new Color();
+        $color->nombre = $request->input('nombre');
+        $color->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-tallas')->with('success', 'Talla creada correctamente.');
+        return redirect()->route('ver-colores')->with('success', 'Color creado correctamente.');
     }
 
     /**
@@ -72,7 +72,7 @@ class TallaController extends Controller
     {
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
-            'letra' => 'required|string|max:255|unique:tallas,letra,' . $id,
+            'nombre' => 'required|string|max:255|unique:colores,nombre,' . $id,
         ]);
 
         // Si la validación falla, redirigir de vuelta con errores
@@ -80,13 +80,13 @@ class TallaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Buscar la talla existente
-        $talla = Talla::findOrFail($id);
-        $talla->letra = $request->input('letra');
-        $talla->save();
+        // Buscar el color existente
+        $color = Color::findOrFail($id);
+        $color->nombre = $request->input('nombre');
+        $color->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-tallas')->with('success', 'Talla actualizada correctamente.');
+        return redirect()->route('ver-colores')->with('success', 'Color actualizado correctamente.');
     }
 
     /**
@@ -94,10 +94,10 @@ class TallaController extends Controller
      */
     public function destroy($id)
     {
-        $talla = Talla::findOrFail($id);
-        $talla->delete();
+        $color = Color::findOrFail($id);
+        $color->delete();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-tallas')->with('success', 'Talla eliminada correctamente.');
+        return redirect()->route('ver-colores')->with('success', 'Color eliminado correctamente.');
     }
 }

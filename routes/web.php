@@ -10,6 +10,8 @@ use App\Http\Controllers\RoleRedirectController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\TallaController;
+use App\Http\Controllers\ColorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
@@ -20,6 +22,9 @@ use Illuminate\Support\Facades\Mail;
 
 //     return 'Correo enviado';
 // });
+
+Route::get('/limpio', function () {return view('limpio');});
+
 
 // Ruta para la página principal
 Route::get('/', [IndexController::class, 'index']);
@@ -64,10 +69,22 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/marca/ver-marcas', [MarcaController::class, 'index'])->name('ver-marcas');     // Ruta ver marcas
     Route::put('/admin/marca/editar-marcas/{id}', [MarcaController::class, 'update'])->name('marcas.update');     // Ruta para actualizar marcas
     Route::delete('/admin/marca/eliminar-marcas/{id}', [MarcaController::class, 'destroy'])->name('marcas.destroy');     // Ruta para eliminar marcas
+
+    // Rutas para el control de TALLAS
+    Route::post('/tallas', [TallaController::class, 'store'])->name('tallas.store');     // Ruta para almacenar tallas
+    Route::get('/admin/ver-tallas', [TallaController::class, 'index'])->name('ver-tallas');     // Ruta ver tallas
+    Route::put('/admin/talla/editar-tallas/{id}', [TallaController::class, 'update'])->name('tallas.update');     // Ruta para actualizar tallas
+    Route::delete('/admin/talla/eliminar-tallas/{id}', [TallaController::class, 'destroy'])->name('tallas.destroy');     // Ruta para eliminar tallas
+
+    // Rutas para el control de COLORES
+    Route::post('/colores', [ColorController::class, 'store'])->name('colores.store');     // Ruta para almacenar colores
+    Route::get('/admin/color/ver-colores', [ColorController::class, 'index'])->name('ver-colores');     // Ruta ver colores
+    Route::put('/admin/color/editar-colores/{id}', [ColorController::class, 'update'])->name('colores.update');     // Ruta para actualizar colores
+    Route::delete('/admin/color/eliminar-colores/{id}', [ColorController::class, 'destroy'])->name('colores.destroy');     // Ruta para eliminar colores
 });
 
 // Grupo de rutas para usuarios con rol de mantenimiento
-Route::middleware(['auth', 'verified', 'role:mantenimiento'])->group(function () {
+    Route::middleware(['auth', 'verified', 'role:mantenimiento'])->group(function () {
     // Ruta para el dashboard de mantenimiento
     Route::get('/mantenimiento/dashboard', [RoleRedirectController::class, 'mantenimiento'])->name('mantenimiento');
 });

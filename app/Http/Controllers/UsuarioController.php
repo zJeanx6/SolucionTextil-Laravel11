@@ -41,7 +41,7 @@ class UsuarioController extends Controller
 
         // Si la validación falla, redirigir de vuelta con errores
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->route('ver-usuarios')->withErrors($validator)->withInput();
         }
 
         // Crear un nuevo usuario
@@ -57,7 +57,7 @@ class UsuarioController extends Controller
         $usuario->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-usuarios')->with('success', 'Usuario creado correctamente.');
+        return redirect()->route('ver-usuarios')->with('create_success', 'Usuario creado correctamente.');
     }
 
     /**
@@ -119,7 +119,7 @@ class UsuarioController extends Controller
         $usuario->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-usuarios')->with('success', 'Usuario actualizado correctamente.');
+        return redirect()->route('ver-usuarios')->with('update_success', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -131,6 +131,6 @@ class UsuarioController extends Controller
         $usuario->delete();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('ver-usuarios')->with('success', 'Usuario eliminado correctamente.');
+        return redirect()->route('ver-usuarios')->with('delete_success', 'Usuario eliminado correctamente.');
     }
 }

@@ -9,9 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h1 class="text-2xl font-bold mb-6">Lista de Marcas</h1>
-                    <div class="mb-4 text-right">
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('modal-create').classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden')">Agregar Marca</button>
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold">Lista de Marcas</h1>
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('modal-create').classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden')">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white border border-gray-200">
@@ -27,12 +29,12 @@
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $marca->nombre }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200 flex">
                                             <div class="mx-auto">
-                                                <button class="bg-blue-500 hover:bg-blue-700 font-bold text-white py-1 px-2 rounded" onclick="openEditModal({{ $marca->id }}, '{{ $marca->nombre }}')">Actualizar</button>
-                                                <form action="{{ route('marcas.destroy', $marca->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="bg-red-500 hover:bg-red-700 font-bold text-white py-1 px-2 rounded">Eliminar</button>
-                                                </form>
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded" onclick="openEditModal({{ $marca->id }}, '{{ $marca->nombre }}')">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded" onclick="openDeleteModal({{ $marca->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -91,11 +93,36 @@
         </div>
     </div>
 
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="modal-delete-confirm" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white p-6 rounded shadow-lg w-full max-w-md text-center">
+                <svg class="w-16 h-16 text-yellow-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+                <p class="mb-4">¿Estás seguro de que deseas eliminar esta marca?</p>
+                <form id="form-delete" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="document.getElementById('modal-delete-confirm').classList.add('hidden'); document.getElementById('overlay').classList.add('hidden')">Cancelar</button>
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         function openEditModal(id, nombre) {
             document.getElementById('edit-nombre').value = nombre;
             document.getElementById('form-edit').action = '/admin/marca/editar-marcas/' + id;
             document.getElementById('modal-edit').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function openDeleteModal(id) {
+            document.getElementById('form-delete').action = '/admin/marca/eliminar-marcas/' + id;
+            document.getElementById('modal-delete-confirm').classList.remove('hidden');
             document.getElementById('overlay').classList.remove('hidden');
         }
     </script>

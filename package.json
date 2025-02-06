@@ -17,6 +17,7 @@
         "vite": "^6.0"
     },
     "dependencies": {
-        "bootstrap": "^5.3.3"
+        "bootstrap": "^5.3.3",
+        "toastify-js": "^1.12.0"
     }
 }

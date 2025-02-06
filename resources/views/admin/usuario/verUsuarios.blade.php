@@ -9,14 +9,17 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h1 class="text-2xl font-bold mb-6">Lista de Usuarios</h1>
-                    <div class="mb-4 text-right">
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('modal-create').classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden')">Agregar Usuario</button>
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold">Lista de Usuarios</h1>
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('modal-create').classList.remove('hidden'); document.getElementById('overlay').classList.remove('hidden')">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white border border-gray-200">
                             <thead>
                                 <tr>
+                                    <th class="py-2 px-4 border-b border-gray-200">Documento</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Nombre</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Apellido</th>
                                     <th class="py-2 px-4 border-b border-gray-200">Email</th>
@@ -29,19 +32,22 @@
                             <tbody>
                                 @foreach ($usuarios as $usuario)
                                     <tr>
+                                        <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->id }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->nombre }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->apellido }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->email }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->contacto }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->rol->nombre }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $usuario->estado->nombre }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-200">
-                                            <button class="bg-blue-500 hover:bg-blue-700 font-bold text-white py-1 px-2 rounded" onclick="openEditModal({{ $usuario->id }}, '{{ $usuario->nombre }}', '{{ $usuario->apellido }}', '{{ $usuario->email }}', '{{ $usuario->contacto }}', {{ $usuario->rol->id }}, {{ $usuario->estado->id }})">Actualizar</button>
-                                            <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="bg-red-500 hover:bg-red-700 font-bold text-white py-1 px-2 rounded">Eliminar</button>
-                                            </form>
+                                        <td class="py-2 px-4 border-b border-gray-200 flex">
+                                            <div class="mx-auto">
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded" onclick="openEditModal({{ $usuario->id }}, '{{ $usuario->nombre }}', '{{ $usuario->apellido }}', '{{ $usuario->email }}', '{{ $usuario->contacto }}', {{ $usuario->rol->id }}, {{ $usuario->estado->id }})">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded" onclick="openDeleteModal({{ $usuario->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,7 +67,7 @@
         <div class="flex items-center justify-center min-h-screen">
             <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
                 <h2 class="text-xl font-bold mb-4">Agregar nuevo Usuario</h2>
-                <form action="{{ route('usuarios.store') }}" method="POST" id="form__registerUser">
+                <form action="{{ route('usuarios.store') }}" method="POST" id="form__registerUser" onsubmit="return validateForm()">
                     @csrf
                     <div class="mb-4">
                         <label for="id" class="block text-sm font-medium text-gray-700">Documento:</label>
@@ -121,6 +127,25 @@
                         <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="document.getElementById('modal-create').classList.add('hidden'); document.getElementById('overlay').classList.add('hidden')">Cancelar</button>
                         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="modal-delete-confirm" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white p-6 rounded shadow-lg w-full max-w-md text-center">
+                <svg class="w-16 h-16 text-yellow-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+                <p class="mb-4">¿Estás seguro de que deseas eliminar este usuario?</p>
+                <form id="form-delete" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="closeDeleteModal()">Cancelar</button>
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
                 </form>
             </div>
         </div>
@@ -210,5 +235,41 @@
             document.getElementById('modal-edit').classList.remove('hidden');
             document.getElementById('overlay').classList.remove('hidden');
         }
+
+        function openDeleteModal(id) {
+            document.getElementById('form-delete').action = '/admin/eliminar-usuario/' + id;
+            document.getElementById('modal-delete-confirm').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('modal-delete-confirm').classList.add('hidden');
+            document.getElementById('overlay').classList.add('hidden');
+        }
+
+        function validateForm() {
+            let form = document.getElementById('form__registerUser');
+            let inputs = form.querySelectorAll('input, select');
+            let valid = true;
+
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    valid = false;
+                }
+            });
+
+            if (!valid) {
+                document.getElementById('modal-create').classList.remove('hidden');
+                document.getElementById('overlay').classList.remove('hidden');
+                document.getElementById('modal-error').classList.remove('hidden');
+            }
+            return valid;
+        }
+
+        @if ($errors->any())
+            document.getElementById('modal-create').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('modal-error').classList.remove('hidden');
+        @endif
     </script>
 </x-app-layout>
