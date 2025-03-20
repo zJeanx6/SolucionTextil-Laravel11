@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [RoleRedirectController::class, 'admin'])->name('dashboard');     
 
     //Rutas para el control de USUARIOS
+    // Route::resource('usuarios', UsuarioController::class);
     Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');     // Ruta para almacenar usuarios
     Route::get('/admin/ver-usuarios', [UsuarioController::class, 'index'])->name('ver-usuarios');    // Ruta para ver usuarios
     Route::put('/admin/editar-usuario/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
